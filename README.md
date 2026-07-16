@@ -5,7 +5,9 @@ My personal portfolio showcasing my projects, technical skills, and professional
 ## Live Demo
 
 Visit the portfolio here:
+
 **https://int0x8000.github.io/**
+
 **https://github.com/int0x8000/homelab**
 
 ## Features
