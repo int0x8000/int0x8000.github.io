@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matthew Nifong — Systems & Security Engineer</title>
+  <meta name="description" content="Systems and security engineer specializing in IAM, endpoint management, and detection engineering. Greater Atlanta, GA." />
+  <meta property="og:title" content="Matthew Nifong — Systems & Security Engineer" />
+  <meta property="og:description" content="Systems and security engineer. Intune · Graylog · Detection-as-Code · Ansible · Proxmox. Greater Atlanta, GA." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#282828" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+</head>
+<body>
+
+  
+  <nav class="nav">
+    <a href="#" class="nav-logo">int0x8000<span class="blink">_</span></a>
+    <div class="nav-links">
+      <a href="#about">about</a>
+      <a href="#timeline">timeline</a>
+      <a href="#skills">skills</a>
+      <a href="#projects">projects</a>
+      <a href="#contact">contact</a>
+    </div>
+    <button class="nav-menu-btn" aria-label="menu">☰</button>
+  </nav>
+
+  <section class="hero" id="hero">
+    <canvas class="topology-canvas" id="topology-canvas"></canvas>
+    <div class="hero-inner">
+
+      
+      <div class="term-chrome">
+        <div class="konsole-menubar">
+          <span class="kmenu-item active">File</span>
+          <span class="kmenu-item">Edit</span>
+          <span class="kmenu-item">View</span>
+          <span class="kmenu-item">Scrollback</span>
+          <span class="kmenu-item">Settings</span>
+          <span class="kmenu-item">Help</span>
+          <span class="kmenu-spacer"></span>
+          <span class="term-status-pill">
+            <span class="pulse-dot"></span>
+            <span id="hero-uptime">--</span>
+          </span>
+        </div>
+        <div class="konsole-tabbar">
+          <div class="konsole-tab active">
+            <span class="ktab-icon">⬡</span>
+            <span class="ktab-title">visitor@int0x8000: ~</span>
+            <span class="ktab-close">✕</span>
+          </div>
+          <div class="konsole-tab-new">+</div>
+        </div>
+
+        
+        <div class="terminal-container" tabindex="0">
+          <div class="term-output"></div>
+          <div class="term-input-line" style="display:none;">
+            <span class="term-prompt"></span>
+            <span class="term-input-wrap">
+              <input class="term-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" />
+              <span class="term-cursor blink">▌</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="hero-cta">
+        <a href="assets/matthew-resume.pdf" class="btn-primary" target="_blank">↓ Resume</a>
+        <a href="https://github.com/int0x8000" class="btn-ghost" target="_blank">GitHub</a>
+        <a href="www.linkedin.com/in/matthew-nifong" class="btn-ghost" target="_blank">LinkedIn</a>
+      </div>
+
+    </div>
+  </section>
+
+  
+  <section class="section" id="about">
+    <div class="container annotated">
+      <div class="margin-note left">
+        <span class="mn-val">// current role</span>
+        <span class="mn-val">// MSP · Atlanta</span>
+        <span class="mn-val">// 2024 — present</span>
+      </div>
+      <div class="margin-note right">
+        <span class="mn-val">// 1,000+ endpoints</span>
+        <span class="mn-val">// multi-tenant</span>
+        <span class="mn-val">// hybrid + cloud</span>
+      </div>
+      <h2 class="section-title reveal"><span class="hash">#</span> about</h2>
+      <div class="about-grid reveal">
+        <div class="about-text">
+          <p>By work I'm at an MSP leading a <strong>Microsoft Intune + Entra ID</strong> rollout across multiple client tenants — <strong>1,000+ Windows endpoints</strong>, hybrid Azure AD, Autopilot, Win32 app packaging, the works. It's the kind of project most people at my level don't get anywhere near, and I've learned more from the edge cases and gotchas than any cert course.</p>
+          <p>At home I'm running a Dell PowerEdge R630 out of my home — Proxmox, 34 LXC containers, Graylog collecting logs from all of them, Wazuh watching for threats, Ansible managing the fleet, and a Detection-as-Code pipeline pushing Sigma rules through GitHub Actions CI/CD. Every project is documented like I'm handing it off to someone else, because I think that's what separates engineers from technicians.</p>
+          <p>I'm looking to make the jump into a dedicated <strong>Systems Engineering</strong>, <strong>IAM</strong>, or <strong>Security Operations</strong> role where I can do this kind of work full time.</p>
+          <div class="cert-row">
+            <span class="cert-badge active">CompTIA A+</span>
+            <span class="cert-badge progress">SC-300 in progress</span>
+          </div>
+        </div>
+        <div class="about-stats">
+          <div class="stat-card">
+            <span class="stat-num">1,000<span class="stat-plus">+</span></span>
+            <span class="stat-label">Endpoints managed via Intune</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">34</span>
+            <span class="stat-label">LXC containers in homelab</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">5+</span>
+            <span class="stat-label">Sigma detection rules in CI/CD</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">SC-300</span>
+            <span class="stat-label">Microsoft IAM cert in progress</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <div class="building-strip">
+    <div class="container">
+      <div class="building-inner">
+        <span class="building-label"><span class="pulse-dot"></span> Currently Building</span>
+        <div class="building-items">
+          <div class="building-item">
+            <span class="bi-status inprog">SC-300</span>
+            <span class="bi-text">Microsoft Identity & Access Administrator cert</span>
+          </div>
+          <div class="building-sep">·</div>
+          <div class="building-item">
+            <span class="bi-status inprog">T-Pot</span>
+            <span class="bi-text">Honeypot VPS with WireGuard log forwarding</span>
+          </div>
+          <div class="building-sep">·</div>
+          <div class="building-item">
+            <span class="bi-status inprog">Intune</span>
+            <span class="bi-text">1,000+ endpoint MDM rollout across client tenants</span>
+          </div>
+          <div class="building-sep">·</div>
+          <div class="building-item">
+            <span class="bi-status inprog">Portfolio</span>
+            <span class="bi-text">This site — going public soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <section class="section section-alt" id="timeline">
+    <div class="container annotated">
+      <div class="margin-note left">
+        <span class="mn-val">// career arc</span>
+        <span class="mn-val">// newest → oldest</span>
+      </div>
+      <div class="margin-note right">
+        <span class="mn-val">// SC-300 in progress</span>
+        <span class="mn-val">// actively building</span>
+        <span class="mn-val">// open to offers</span>
+      </div>
+      <h2 class="section-title reveal"><span class="hash">#</span> timeline</h2>
+      <div class="timeline reveal">
+
+        <div class="tl-item">
+          <div class="tl-dot active"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <span class="tl-date">2026 — Present</span>
+              <span class="tl-badge inprog">IN PROGRESS</span>
+            </div>
+            <h3 class="tl-title">SC-300: Microsoft Identity & Access Administrator</h3>
+            <p class="tl-desc">Actively studying for Microsoft's IAM certification. Directly maps to production Intune/Entra ID work and homelab Authentik SSO deployment.</p>
+            <div class="tl-tags"><span class="tag">Entra ID</span><span class="tag">IAM</span><span class="tag">Microsoft 365</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot active"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <span class="tl-date">2025 — Present</span>
+              <span class="tl-badge inprog">IN PROGRESS</span>
+            </div>
+            <h3 class="tl-title">Multi-Tenant Intune Deployment — 1,000+ Endpoints</h3>
+            <p class="tl-desc">Leading design and implementation of Microsoft Intune device management across multiple MSP client tenants. Hybrid Azure AD and cloud-only environments, Windows Autopilot, compliance policies, and Win32 app packaging.</p>
+            <div class="tl-tags"><span class="tag">Intune</span><span class="tag">Entra ID</span><span class="tag">Autopilot</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot active"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <span class="tl-date">2026</span>
+              <span class="tl-badge done">SHIPPED</span>
+            </div>
+            <h3 class="tl-title">Detection-as-Code Pipeline</h3>
+            <p class="tl-desc">Built a Sigma rule CI/CD pipeline using GitHub Actions — automatic validation and conversion to OpenSearch Lucene queries on every commit. 5 rules covering SSH brute force, auth failures, privilege escalation, new user creation, and service crashes.</p>
+            <div class="tl-tags"><span class="tag">Sigma</span><span class="tag">GitHub Actions</span><span class="tag">MITRE ATT&CK</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot active"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <span class="tl-date">2025 — Present</span>
+              <span class="tl-badge done">SHIPPED</span>
+            </div>
+            <h3 class="tl-title">Centralized Log Management — 34 LXCs</h3>
+            <p class="tl-desc">Deployed Graylog + OpenSearch + MongoDB for fleet-wide log collection. Rolled out rsyslog forwarding across all 34 containers in a single Ansible playbook run. Zero failures.</p>
+            <div class="tl-tags"><span class="tag">Graylog</span><span class="tag">Ansible</span><span class="tag">OpenSearch</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <span class="tl-date">2024</span>
+              <span class="tl-badge done">BUILT</span>
+            </div>
+            <h3 class="tl-title">Homelab — Dell PowerEdge R630</h3>
+            <p class="tl-desc">Started building a self-hosted infrastructure portfolio on a Dell PowerEdge R630 running Proxmox VE. Now at 34 LXC containers spanning security, monitoring, identity, automation, and media workloads.</p>
+            <div class="tl-tags"><span class="tag">Proxmox</span><span class="tag">LXC</span><span class="tag">Self-hosted</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <span class="tl-date">2024 — Present</span>
+              <span class="tl-badge role">CURRENT ROLE</span>
+            </div>
+            <h3 class="tl-title">Hardware Configuration Specialist — MSP</h3>
+            <p class="tl-desc">Joined an MSP managing infrastructure across multiple enterprise clients. Endpoint support, Active Directory administration, PowerShell scripting, imaging, and on-site hardware deployment. On-call primary for security event investigation and endpoint isolation via <strong>Trend Vision One XDR</strong> — triaging detections, investigating suspicious activity, and making isolation calls independently.</p>
+            <div class="tl-tags"><span class="tag">MSP</span><span class="tag">Active Directory</span><span class="tag">PowerShell</span><span class="tag">Trend Vision One</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-head">
+              <span class="tl-date">April 2025</span>
+              <span class="tl-badge cert">CERTIFIED</span>
+            </div>
+            <h3 class="tl-title">CompTIA A+</h3>
+            <p class="tl-desc">Earned CompTIA A+ certification — foundational validation of hardware, OS, networking, and troubleshooting skills across enterprise environments.</p>
+            <div class="tl-tags"><span class="tag">CompTIA</span><span class="tag">Hardware</span><span class="tag">Networking</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="skills">
+    <div class="container annotated">
+      <div class="margin-note left">
+        <span class="mn-val">// cat skills.yaml</span>
+        <span class="mn-val">// last updated</span>
+        <span class="mn-val">// 2026-07-16</span>
+      </div>
+      <div class="margin-note right">
+        <span class="mn-val">// 6 categories</span>
+        <span class="mn-val">// vendor-neutral</span>
+        <span class="mn-val">// homelab proven</span>
+      </div>
+      <h2 class="section-title reveal"><span class="hash">#</span> skills</h2>
+      <div class="skills-hint reveal"><span class="mono c-muted">$ cat skills.yaml</span></div>
+      <div class="yaml-block reveal">
+        <div class="yaml-line"><span class="y-comment"># technical skill areas</span></div>
+        <div class="yaml-line"><span class="y-root">skills:</span></div>
+
+        <div class="yaml-group">
+          <div class="yaml-line"><span class="y-key">  identity_and_access_management:</span></div>
+          <div class="yaml-line"><span class="y-val">    - Microsoft Entra ID (Azure AD)</span></div>
+          <div class="yaml-line"><span class="y-val">    - Microsoft Intune (multi-tenant MDM)</span></div>
+          <div class="yaml-line"><span class="y-val">    - Windows Autopilot</span></div>
+          <div class="yaml-line"><span class="y-val">    - Conditional Access &amp; Compliance Policies</span></div>
+          <div class="yaml-line"><span class="y-val">    - Active Directory (AD DS)</span></div>
+          <div class="yaml-line"><span class="y-val">    - Authentik SSO / IdP (OIDC, SAML)</span></div>
+          <div class="yaml-line"><span class="y-val">    - Vaultwarden (self-hosted Bitwarden)</span></div>
+        </div>
+
+        <div class="yaml-group">
+          <div class="yaml-line"><span class="y-key">  security_and_detection:</span></div>
+          <div class="yaml-line"><span class="y-val">    - Graylog (centralized log management)</span></div>
+          <div class="yaml-line"><span class="y-val">    - Wazuh SIEM</span></div>
+          <div class="yaml-line"><span class="y-val">    - Sigma Rules &amp; Detection-as-Code</span></div>
+          <div class="yaml-line"><span class="y-val">    - GitHub Actions CI/CD</span></div>
+          <div class="yaml-line"><span class="y-val">    - OpenSearch / Lucene queries</span></div>
+          <div class="yaml-line"><span class="y-val">    - MITRE ATT&amp;CK framework</span></div>
+        </div>
+
+        <div class="yaml-group">
+          <div class="yaml-line"><span class="y-key">  xdr_and_security_operations:</span></div>
+          <div class="yaml-line"><span class="y-val">    - Trend Vision One XDR</span></div>
+          <div class="yaml-line"><span class="y-val">    - Security event investigation & triage</span></div>
+          <div class="yaml-line"><span class="y-val">    - Endpoint isolation & incident response</span></div>
+          <div class="yaml-line"><span class="y-val">    - Detection analysis (malware, suspicious scripts, lateral movement)</span></div>
+        </div>
+
+        <div class="yaml-group">
+          <div class="yaml-line"><span class="y-key">  infrastructure_and_automation:</span></div>
+          <div class="yaml-line"><span class="y-val">    - Ansible (fleet configuration management)</span></div>
+          <div class="yaml-line"><span class="y-val">    - PowerShell scripting</span></div>
+          <div class="yaml-line"><span class="y-val">    - Bash / shell scripting</span></div>
+          <div class="yaml-line"><span class="y-val">    - Proxmox VE hypervisor</span></div>
+          <div class="yaml-line"><span class="y-val">    - LXC containers &amp; Docker</span></div>
+          <div class="yaml-line"><span class="y-val">    - Git / GitHub</span></div>
+        </div>
+
+        <div class="yaml-group">
+          <div class="yaml-line"><span class="y-key">  networking_and_zero_trust:</span></div>
+          <div class="yaml-line"><span class="y-val">    - Cloudflare Tunnel (ZTNA)</span></div>
+          <div class="yaml-line"><span class="y-val">    - WireGuard VPN</span></div>
+          <div class="yaml-line"><span class="y-val">    - VLANs &amp; network segmentation</span></div>
+          <div class="yaml-line"><span class="y-val">    - Unifi (UCG Max)</span></div>
+          <div class="yaml-line"><span class="y-val">    - Pi-hole DNS filtering</span></div>
+        </div>
+
+        <div class="yaml-group">
+          <div class="yaml-line"><span class="y-key">  monitoring_and_observability:</span></div>
+          <div class="yaml-line"><span class="y-val">    - Prometheus &amp; Grafana</span></div>
+          <div class="yaml-line"><span class="y-val">    - Uptime Kuma</span></div>
+          <div class="yaml-line"><span class="y-val">    - Beszel</span></div>
+          <div class="yaml-line"><span class="y-val">    - ntfy push alerting</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section" id="projects">
+    <div class="container annotated">
+      <div class="margin-note left">
+        <span class="mn-val">// ls -la projects/</span>
+        <span class="mn-val">// 9 entries total</span>
+        <span class="mn-val">// all production</span>
+      </div>
+      <div class="margin-note right">
+        <span class="mn-val">// github.com</span>
+        <span class="mn-val">// /int0x8000</span>
+        <span class="mn-val">// versioned + documented</span>
+      </div>
+      <h2 class="section-title reveal"><span class="hash">#</span> projects</h2>
+      <p class="section-sub reveal">Selected projects — production-grade, documented, and version-controlled.<br><span class="mono c-muted">$ ls projects/</span></p>
+
+      
+      <div class="featured-grid reveal">
+
+        <a href="projects/graylog.html" class="feat-card">
+          <div class="feat-card-head">
+            <span class="proj-cat">SIEM / Log Management</span>
+            <span class="proj-status online">● ONLINE</span>
+          </div>
+          <h3 class="feat-title">Centralized Log Management</h3>
+          <p class="feat-desc">Fleet-wide syslog collection across 34 LXC containers using Graylog + OpenSearch + MongoDB. rsyslog forwarding deployed fleet-wide via Ansible. Security, system, and application log streams with real-time dashboards.</p>
+          <div class="tag-row">
+            <span class="tag">Graylog</span><span class="tag">Ansible</span><span class="tag">OpenSearch</span><span class="tag">rsyslog</span>
+          </div>
+          <span class="feat-link">View project →</span>
+        </a>
+
+        <a href="projects/detection.html" class="feat-card">
+          <div class="feat-card-head">
+            <span class="proj-cat">Detection Engineering</span>
+            <span class="proj-status online">● ONLINE</span>
+          </div>
+          <h3 class="feat-title">Detection-as-Code Pipeline</h3>
+          <p class="feat-desc">Sigma rules version-controlled in Git, automatically validated and converted to OpenSearch Lucene queries via GitHub Actions CI/CD. Every detection change is reviewed, tested, and auditable before deployment.</p>
+          <div class="tag-row">
+            <span class="tag">Sigma</span><span class="tag">GitHub Actions</span><span class="tag">MITRE ATT&CK</span><span class="tag">OpenSearch</span>
+          </div>
+          <span class="feat-link">View project →</span>
+        </a>
+
+        <a href="projects/intune.html" class="feat-card">
+          <div class="feat-card-head">
+            <span class="proj-cat">IAM / Endpoint Management</span>
+            <span class="proj-status inprog">● IN PROGRESS</span>
+          </div>
+          <h3 class="feat-title">Multi-Tenant Intune Deployment</h3>
+          <p class="feat-desc">Designing and implementing Microsoft Intune device management across multiple client tenants at an MSP, covering 1,000+ Windows endpoints in hybrid Azure AD and cloud-only environments.</p>
+          <div class="tag-row">
+            <span class="tag">Intune</span><span class="tag">Entra ID</span><span class="tag">Autopilot</span><span class="tag">Conditional Access</span>
+          </div>
+          <span class="feat-link">View project →</span>
+        </a>
+
+      </div>
+
+      <h3 class="more-title reveal">More Projects</h3>
+      <div class="more-grid reveal">
+
+        <div class="more-card">
+          <div class="feat-card-head">
+            <span class="proj-cat">Identity</span>
+            <span class="proj-status online">● ONLINE</span>
+          </div>
+          <h4 class="more-title-card">Authentik SSO</h4>
+          <p class="more-desc">Self-hosted IdP with OIDC/SAML integration. Zero-trust external access via Cloudflare Tunnel — no open inbound ports.</p>
+          <div class="tag-row"><span class="tag">Authentik</span><span class="tag">OIDC</span><span class="tag">Cloudflare</span></div>
+        </div>
+
+        <div class="more-card">
+          <div class="feat-card-head">
+            <span class="proj-cat">Security</span>
+            <span class="proj-status online">● ONLINE</span>
+          </div>
+          <h4 class="more-title-card">Wazuh SIEM</h4>
+          <p class="more-desc">Agent-based threat detection, file integrity monitoring, and log analysis. Alerts routed to ntfy for real-time push notifications.</p>
+          <div class="tag-row"><span class="tag">Wazuh</span><span class="tag">FIM</span><span class="tag">ntfy</span></div>
+        </div>
+
+        <div class="more-card">
+          <div class="feat-card-head">
+            <span class="proj-cat">Automation</span>
+            <span class="proj-status online">● ONLINE</span>
+          </div>
+          <h4 class="more-title-card">Ansible Fleet Management</h4>
+          <p class="more-desc">Dedicated control node managing 34 LXC hosts via SSH key-based access bootstrapped through Proxmox pct exec.</p>
+          <div class="tag-row"><span class="tag">Ansible</span><span class="tag">Proxmox</span><span class="tag">IaC</span></div>
+        </div>
+
+        <div class="more-card">
+          <div class="feat-card-head">
+            <span class="proj-cat">Networking</span>
+            <span class="proj-status online">● ONLINE</span>
+          </div>
+          <h4 class="more-title-card">Zero Trust Network</h4>
+          <p class="more-desc">VLAN-segmented network with Unifi UCG Max, Pi-hole DNS filtering, and Cloudflare Tunnel. No open inbound firewall ports.</p>
+          <div class="tag-row"><span class="tag">Unifi</span><span class="tag">VLANs</span><span class="tag">Pi-hole</span></div>
+        </div>
+
+        <div class="more-card">
+          <div class="feat-card-head">
+            <span class="proj-cat">Honeypot</span>
+            <span class="proj-status poc">● PoC</span>
+          </div>
+          <h4 class="more-title-card">Cowrie SSH Honeypot</h4>
+          <p class="more-desc">SSH/Telnet honeypot for attacker TTP capture. Built and configured — pending deployment to isolated VLAN.</p>
+          <div class="tag-row"><span class="tag">Cowrie</span><span class="tag">Threat Intel</span><span class="tag">Deception</span></div>
+        </div>
+
+        <div class="more-card">
+          <div class="feat-card-head">
+            <span class="proj-cat">Monitoring</span>
+            <span class="proj-status online">● ONLINE</span>
+          </div>
+          <h4 class="more-title-card">Observability Stack</h4>
+          <p class="more-desc">Prometheus metrics, Grafana dashboards, Uptime Kuma service monitoring, and Beszel host resource tracking.</p>
+          <div class="tag-row"><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">Uptime Kuma</span></div>
+        </div>
+
+        <div class="more-card">
+          <div class="feat-card-head">
+            <span class="proj-cat">XDR / Security Operations</span>
+            <span class="proj-status online">● ACTIVE</span>
+          </div>
+          <h4 class="more-title-card">Trend Vision One XDR</h4>
+          <p class="more-desc">On-call primary for security event investigation and endpoint isolation across MSP client environments. Independently triages detections, investigates suspicious process activity, and makes isolation decisions. Collaborates with security team lead on escalated incidents.</p>
+          <div class="tag-row"><span class="tag">XDR</span><span class="tag">Trend Vision One</span><span class="tag">Incident Response</span><span class="tag">Endpoint Isolation</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section section-alt" id="contact">
+    <div class="container">
+      <h2 class="section-title reveal"><span class="hash">#</span> contact</h2>
+      <div class="contact-grid reveal">
+        <div class="contact-left">
+          <p class="contact-intro">Open to roles in Systems Engineering, IAM Engineering, and Security Operations in the Greater Atlanta area.</p>
+          <div class="contact-links">
+            <a href="mailto:matthew@ganifongs.com" class="contact-item">
+              <span class="ci-icon">✉</span>
+              <span>matthew@ganifongs.com</span>
+            </a>
+            <a href="www.linkedin.com/in/matthew-nifong" class="contact-item" target="_blank">
+              <span class="ci-icon mono">in</span>
+              <span>www.linkedin.com/in/matthew-nifong</span>
+            </a>
+            <a href="https://github.com/int0x8000" class="contact-item" target="_blank">
+              <span class="ci-icon mono">gh</span>
+              <span>github.com/int0x8000</span>
+            </a>
+          </div>
+        </div>
+        <div class="contact-right">
+          <div class="status-terminal">
+            <div class="st-bar">
+              <div class="term-dots">
+                <span class="tdot red"></span>
+                <span class="tdot yellow"></span>
+                <span class="tdot green"></span>
+              </div>
+              <span class="st-title">status.sh</span>
+            </div>
+            <div class="st-body mono">
+              <div><span class="y-key">availability</span>: <span class="c-green">open</span></div>
+              <div><span class="y-key">location</span>:     <span class="c-str">Greater Atlanta, GA</span></div>
+              <div><span class="y-key">remote</span>:       <span class="c-green">yes</span></div>
+              <div><span class="y-key">relocation</span>:   <span class="c-blue">negotiable</span></div>
+              <div><span class="y-key">notice</span>:       <span class="c-str">2 weeks</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="mono c-muted">int0x8000 · Greater Atlanta, GA</span>
+      <span class="mono c-muted"><span class="c-green">●</span> 34 containers running</span>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/topology.js"></script>
+  <script src="js/filesystem.js"></script>
+  <script src="js/commands.js"></script>
+  <script src="js/network.js"></script>
+  <script src="js/terminal.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>
