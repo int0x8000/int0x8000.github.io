@@ -59,7 +59,7 @@ const FS = {
 Systems & Security Engineer — Greater Atlanta, GA
 
 Download the full PDF: assets/matthew-resume.pdf
-LinkedIn: www.linkedin.com/in/matthew-nifong
+LinkedIn: https://www.linkedin.com/in/matthew-nifong/
 GitHub:   github.com/int0x8000
 
 Run 'cat about.txt' for summary

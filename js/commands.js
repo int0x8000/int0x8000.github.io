@@ -201,7 +201,7 @@ const COMMANDS = {
       "detection-as-code": "projects/detection.html",
       "intune":            "projects/intune.html",
       "github":            "https://github.com/int0x8000",
-      "linkedin":          "www.linkedin.com/in/matthew-nifong",
+      "linkedin":          "https://www.linkedin.com/in/matthew-nifong/",
       "resume":            "assets/matthew-resume.pdf",
     };
     const key = args[0].replace("projects/","").replace(".html","").toLowerCase();

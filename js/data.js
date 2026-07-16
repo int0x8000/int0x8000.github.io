@@ -7,7 +7,7 @@ const DATA = {
     location: "Greater Atlanta, GA",
     email:    "matthew@ganifongs.com",
     github:   "github.com/int0x8000",
-    linkedin: "www.linkedin.com/in/matthew-nifong",
+    linkedin: "https://www.linkedin.com/in/matthew-nifong/",
     status:   "open to opportunities",
   },
 
