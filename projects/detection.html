@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detection-as-Code Pipeline — int0x8000</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/style.css" />
+  <link rel="stylesheet" href="project.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">← int0x8000<span class="blink">_</span></a>
+    <div class="nav-links">
+      <a href="../index.html#projects">projects</a>
+      <a href="../index.html#contact">contact</a>
+    </div>
+  </nav>
+
+  <div class="proj-hero">
+    <div class="container">
+      <div class="proj-meta">
+        <span class="proj-cat">Detection Engineering</span>
+        <span class="proj-status online">● ONLINE</span>
+      </div>
+      <h1 class="proj-title">Detection-as-Code Pipeline</h1>
+      <p class="proj-subtitle">Sigma rules version-controlled in Git, automatically validated and converted to Graylog Lucene queries via GitHub Actions CI/CD. Every detection change is auditable before it hits production.</p>
+      <div class="tag-row">
+        <span class="tag">Sigma</span><span class="tag">GitHub Actions</span>
+        <span class="tag">MITRE ATT&CK</span><span class="tag">OpenSearch</span>
+        <span class="tag">Graylog</span><span class="tag">Python</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-body">
+    <div class="container proj-grid">
+
+      <div class="proj-main">
+
+        <section class="proj-section">
+          <h2>Why Detection-as-Code</h2>
+          <p>Traditional SIEM rule management means clicking through a UI, making changes with no review process, no audit trail, and no way to test a rule before it goes live. If something breaks or produces false positives, there's no clean rollback path and no record of what changed.</p>
+          <p>Detection-as-Code applies the same engineering discipline to security rules that software teams apply to application code — version control, peer review, automated testing, and consistent deployment. Every rule change goes through Git, gets validated by CI, and produces a deployment artifact before touching production.</p>
+          <div class="compare-grid">
+            <div class="compare-card bad">
+              <div class="compare-head">Traditional Approach</div>
+              <div class="compare-item">✗ Rules clicked into SIEM UI manually</div>
+              <div class="compare-item">✗ No audit trail of changes</div>
+              <div class="compare-item">✗ No review before going live</div>
+              <div class="compare-item">✗ Vendor lock-in — rewrite if you switch SIEMs</div>
+              <div class="compare-item">✗ No way to test before deployment</div>
+            </div>
+            <div class="compare-card good">
+              <div class="compare-head">Detection-as-Code</div>
+              <div class="compare-item">✓ Rules defined as version-controlled YAML</div>
+              <div class="compare-item">✓ Full git history — who changed what and when</div>
+              <div class="compare-item">✓ CI validates before merge</div>
+              <div class="compare-item">✓ Sigma is vendor-neutral — convert to any backend</div>
+              <div class="compare-item">✓ Automated syntax + MITRE tag validation</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Pipeline Architecture</h2>
+          <div class="arch-block">
+            <pre>Engineer writes/edits Sigma rule (.yml)
+            │
+        git push
+            │
+    GitHub Actions triggers
+            │
+    ┌───────────────────────────────┐
+    │  1. sigma check               │
+    │     └─ validate syntax        │
+    │     └─ validate MITRE tags    │
+    │                               │
+    │  2. sigma convert             │
+    │     └─ target: opensearch_lucene
+    │     └─ output Lucene queries  │
+    │                               │
+    │  3. upload artifact           │
+    │     └─ converted-rules.txt    │
+    └───────────────────────────────┘
+            │
+    Apply to Graylog saved searches
+    or pipeline rules</pre>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>GitHub Actions Workflow</h2>
+          <div class="code-block">
+            <div class="code-label">.github/workflows/sigma-validate.yml</div>
+            <pre>name: Validate and Convert Sigma Rules
+
+on:
+  push:
+    paths:
+      - 'homelab/detection-as-code/rules/**'
+  pull_request:
+    paths:
+      - 'homelab/detection-as-code/rules/**'
+
+jobs:
+  sigma-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install sigma-cli and OpenSearch backend
+        run: |
+          pip install sigma-cli
+          sigma plugin install opensearch
+
+      - name: Validate Sigma rules
+        run: sigma check homelab/detection-as-code/rules/
+
+      - name: Convert to OpenSearch/Graylog Lucene
+        run: |
+          sigma convert -t opensearch_lucene --without-pipeline \
+            homelab/detection-as-code/rules/ssh/ \
+            homelab/detection-as-code/rules/auth/ \
+            homelab/detection-as-code/rules/system/ \
+            | tee homelab/detection-as-code/output/graylog/converted-rules.txt
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: graylog-lucene-rules
+          path: homelab/detection-as-code/output/graylog/converted-rules.txt</pre>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Detection Rules</h2>
+          <div class="rule-table">
+            <div class="rule-row header">
+              <span>Rule</span><span>MITRE</span><span>Severity</span><span>Lucene Output</span>
+            </div>
+            <div class="rule-row">
+              <span>SSH Brute Force</span>
+              <span class="tag">T1110.001</span>
+              <span class="sev medium">MEDIUM</span>
+              <span class="mono" style="font-size:11px">message:*Failed\ password*</span>
+            </div>
+            <div class="rule-row">
+              <span>Auth Failure Burst</span>
+              <span class="tag">T1110</span>
+              <span class="sev medium">MEDIUM</span>
+              <span class="mono" style="font-size:11px">message:*authentication\ failure*</span>
+            </div>
+            <div class="rule-row">
+              <span>Sudo Execution</span>
+              <span class="tag">T1548.003</span>
+              <span class="sev low">LOW</span>
+              <span class="mono" style="font-size:11px">message:*sudo*</span>
+            </div>
+            <div class="rule-row">
+              <span>New User Created</span>
+              <span class="tag">T1136.001</span>
+              <span class="sev high">HIGH</span>
+              <span class="mono" style="font-size:11px">message:*new\ user*</span>
+            </div>
+            <div class="rule-row">
+              <span>Service Crash</span>
+              <span class="tag">T1499</span>
+              <span class="sev medium">MEDIUM</span>
+              <span class="mono" style="font-size:11px">message:*Failed\ to\ start*</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Example Rule</h2>
+          <div class="code-block">
+            <div class="code-label">rules/auth/new-user-created.yml</div>
+            <pre>title: New User Account Created
+id: a1b2c3d4-0005-0005-0005-000000000005
+status: test
+description: Detects creation of a new user account on a Linux host
+references:
+    - https://attack.mitre.org/techniques/T1136/001/
+author: Matthew
+date: 2026/07/02
+logsource:
+    product: linux
+    service: auth
+detection:
+    selection:
+        message|contains: 'new user'
+    condition: selection
+falsepositives:
+    - Legitimate user provisioning via Ansible or admin activity
+level: high
+tags:
+    - attack.persistence
+    - attack.t1136.001</pre>
+          </div>
+        </section>
+
+      </div>
+
+      <aside class="proj-sidebar">
+        <div class="sidebar-card">
+          <h3>Stack</h3>
+          <div class="stack-list">
+            <div class="stack-item"><span class="stack-label">Rule Format</span><span>Sigma (YAML)</span></div>
+            <div class="stack-item"><span class="stack-label">Converter</span><span>sigma-cli 3.0.3</span></div>
+            <div class="stack-item"><span class="stack-label">Backend</span><span>pySigma OpenSearch</span></div>
+            <div class="stack-item"><span class="stack-label">CI/CD</span><span>GitHub Actions</span></div>
+            <div class="stack-item"><span class="stack-label">SIEM Target</span><span>Graylog + OpenSearch</span></div>
+            <div class="stack-item"><span class="stack-label">Framework</span><span>MITRE ATT&CK</span></div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>By the Numbers</h3>
+          <div class="stat-row"><span class="stat-n">5</span><span>Sigma rules in production</span></div>
+          <div class="stat-row"><span class="stat-n">3</span><span>MITRE tactics covered</span></div>
+          <div class="stat-row"><span class="stat-n">0</span><span>validation errors on CI</span></div>
+          <div class="stat-row"><span class="stat-n">100%</span><span>automated — no manual steps</span></div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Related Projects</h3>
+          <a href="graylog.html" class="related-link">Centralized Log Management →</a>
+          <a href="../index.html#projects" class="related-link">All Projects →</a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="mono c-muted">int0x8000 · Greater Atlanta, GA</span>
+      <span class="mono c-muted"><span class="c-green">●</span> 34 containers running</span>
+    </div>
+  </footer>
+</body>
+</html>

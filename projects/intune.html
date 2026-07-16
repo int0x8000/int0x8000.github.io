@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi-Tenant Intune Deployment — int0x8000</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/style.css" />
+  <link rel="stylesheet" href="project.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">← int0x8000<span class="blink">_</span></a>
+    <div class="nav-links">
+      <a href="../index.html#projects">projects</a>
+      <a href="../index.html#contact">contact</a>
+    </div>
+  </nav>
+
+  <div class="proj-hero">
+    <div class="container">
+      <div class="proj-meta">
+        <span class="proj-cat">IAM / Endpoint Management</span>
+        <span class="proj-status inprog">● IN PROGRESS</span>
+      </div>
+      <h1 class="proj-title">Multi-Tenant Intune Deployment</h1>
+      <p class="proj-subtitle">Designing and implementing Microsoft Intune device management across multiple MSP client tenants — 1,000+ Windows endpoints spanning hybrid Azure AD and cloud-only environments.</p>
+      <div class="tag-row">
+        <span class="tag">Microsoft Intune</span><span class="tag">Entra ID</span>
+        <span class="tag">Windows Autopilot</span><span class="tag">Conditional Access</span>
+        <span class="tag">PowerShell</span><span class="tag">Win32 Apps</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-body">
+    <div class="container proj-grid">
+
+      <div class="proj-main">
+
+        <section class="proj-section">
+          <h2>Overview</h2>
+          <p>Managing endpoints across multiple enterprise clients from a single MSP introduces complexity that single-tenant deployments don't face — each client has its own Entra ID tenant, its own compliance requirements, its own application portfolio, and its own mix of hybrid and cloud-only devices. A misconfigured policy in one tenant cannot affect another, and the baseline needs to be consistent enough to maintain at scale while flexible enough to accommodate per-client needs.</p>
+          <p>This deployment is currently in the design and testing phase, using the MSP's own tenant as a sandbox before rollout to client environments. All enrollment scenarios, compliance policies, and application deployments are validated end-to-end before touching any client.</p>
+        </section>
+
+        <section class="proj-section">
+          <h2>Identity Architecture</h2>
+          <div class="arch-block">
+            <pre>┌─────────────────────────────────────────────────┐
+│  Hybrid Azure AD Clients                        │
+│                                                 │
+│  On-Premises AD ──► Entra Connect Sync ──► Entra ID
+│       │                                       │
+│  Domain Join                          Auto-Enrollment
+│  (GPO triggers)                       (Intune MDM)
+└─────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────┐
+│  Cloud-Only Clients                             │
+│                                                 │
+│  Entra ID ──► Windows Autopilot ──► OOBE        │
+│                    │                            │
+│             Zero-touch enrollment               │
+│             ESP blocks desktop until            │
+│             apps + policies applied             │
+└─────────────────────────────────────────────────┘</pre>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Enrollment Strategy</h2>
+          <div class="stream-grid">
+            <div class="stream-card">
+              <div class="stream-head">
+                <span class="stream-name">Windows Autopilot</span>
+                <span class="proj-status online">● CONFIGURED</span>
+              </div>
+              <p class="stream-desc">Zero-touch provisioning for new and reimaged devices. Hardware hash uploaded at procurement. OOBE bypassed — device enrolls and configures automatically on first boot. Enrollment Status Page blocks user access until required apps and policies are applied.</p>
+            </div>
+            <div class="stream-card">
+              <div class="stream-head">
+                <span class="stream-name">Auto-Enrollment</span>
+                <span class="proj-status online">● CONFIGURED</span>
+              </div>
+              <p class="stream-desc">Automatic MDM enrollment triggered by Entra ID device group membership. No manual enrollment steps required. Group assignment drives both enrollment and subsequent policy and application targeting.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Baseline Configuration</h2>
+          <p>All managed devices across all tenants receive a consistent security baseline regardless of client-specific requirements. This baseline is tested in the MSP tenant before propagating to any client.</p>
+          <div class="rule-table">
+            <div class="rule-row header">
+              <span>Policy</span><span>Setting</span><span>Status</span>
+            </div>
+            <div class="rule-row">
+              <span>BitLocker</span>
+              <span>Full disk encryption, TPM required, recovery key escrowed to Entra ID</span>
+              <span class="proj-status online" style="font-size:11px">● ACTIVE</span>
+            </div>
+            <div class="rule-row">
+              <span>Windows Hello for Business</span>
+              <span>PIN + biometrics enforced, minimum PIN length set, cloud trust</span>
+              <span class="proj-status online" style="font-size:11px">● ACTIVE</span>
+            </div>
+            <div class="rule-row">
+              <span>Microsoft Defender</span>
+              <span>Real-time protection, cloud-delivered protection, tamper protection</span>
+              <span class="proj-status online" style="font-size:11px">● ACTIVE</span>
+            </div>
+            <div class="rule-row">
+              <span>Windows Update Rings</span>
+              <span>Pilot → Early Adopter → Broad with enforced deadlines</span>
+              <span class="proj-status online" style="font-size:11px">● ACTIVE</span>
+            </div>
+            <div class="rule-row">
+              <span>Minimum OS Version</span>
+              <span>Enforced via compliance policy, non-compliant devices blocked</span>
+              <span class="proj-status online" style="font-size:11px">● ACTIVE</span>
+            </div>
+            <div class="rule-row">
+              <span>Conditional Access</span>
+              <span>Require compliant device + MFA for all M365 access, block legacy auth</span>
+              <span class="proj-status online" style="font-size:11px">● ACTIVE</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Application Deployment</h2>
+          <p>Line-of-business applications are packaged as Win32 (.intunewin) packages using the Microsoft Win32 Content Prep Tool. Each app requires a silent install command, uninstall command, detection rule, and return code configuration before deployment.</p>
+          <div class="code-block">
+            <div class="code-label">Win32 App packaging workflow</div>
+            <pre># 1. Package the installer
+IntuneWinAppUtil.exe -c .\source -s setup.exe -o .\output
+
+# 2. Upload to Intune with:
+#    - Silent install:   setup.exe /S /norestart
+#    - Silent uninstall: setup.exe /uninstall /S
+#    - Detection rule:   File exists at C:\Program Files\App\app.exe
+#    - Return codes:     0=success, 1707=success, 3010=reboot required
+
+# 3. Assign to device group (Required vs Available)
+# 4. Monitor deployment status in Intune portal</pre>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Per-Client Configuration</h2>
+          <p>On top of the baseline, each client gets a configuration layer scoped to their specific device groups — preventing any cross-tenant policy bleed.</p>
+          <div class="stream-grid">
+            <div class="stream-card">
+              <div class="stream-head"><span class="stream-name">OneDrive KFM</span></div>
+              <p class="stream-desc">Known Folder Move silently redirects Desktop, Documents, and Pictures to OneDrive on first sign-in. No user interaction required. Configured via Intune device configuration profile.</p>
+            </div>
+            <div class="stream-card">
+              <div class="stream-head"><span class="stream-name">SharePoint Sync</span></div>
+              <p class="stream-desc">Client SharePoint site URLs configured for automatic sync. Silent configuration — sites appear in File Explorer without the user needing to navigate to SharePoint.</p>
+            </div>
+            <div class="stream-card">
+              <div class="stream-head"><span class="stream-name">Mapped Drives</span></div>
+              <p class="stream-desc">Network drive mappings deployed via PowerShell scripts through Intune. Scoped to client-specific device groups. Handles authentication differences between hybrid and cloud-only identity models.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Known Gotchas</h2>
+          <div class="gotcha-list">
+            <div class="gotcha">
+              <span class="gotcha-label">Hybrid join timing</span>
+              <p>Devices in hybrid environments can take up to 24 hours to reflect Entra ID join status after on-prem domain join. Premature Intune enrollment attempts before sync completes result in "Not Applicable" deployment status — device appears enrolled but policies don't apply.</p>
+            </div>
+            <div class="gotcha">
+              <span class="gotcha-label">ESP timeout</span>
+              <p>Applications with long install times can cause the Enrollment Status Page to time out. Timeout value must be tuned based on the largest required app deployment in each client's profile.</p>
+            </div>
+            <div class="gotcha">
+              <span class="gotcha-label">Win32 detection rules</span>
+              <p>Inaccurate detection rules cause Intune to repeatedly attempt reinstallation. Every app's detection rule must be validated against a clean install before broad deployment.</p>
+            </div>
+            <div class="gotcha">
+              <span class="gotcha-label">Cloud-only mapped drives</span>
+              <p>Traditional UNC path mapped drives require line-of-sight to on-prem file servers. Cloud-only devices need SharePoint/OneDrive as the replacement — mapped drive scripts must detect device type and handle accordingly.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <aside class="proj-sidebar">
+        <div class="sidebar-card">
+          <h3>Stack</h3>
+          <div class="stack-list">
+            <div class="stack-item"><span class="stack-label">MDM</span><span>Microsoft Intune</span></div>
+            <div class="stack-item"><span class="stack-label">Identity</span><span>Microsoft Entra ID</span></div>
+            <div class="stack-item"><span class="stack-label">Provisioning</span><span>Windows Autopilot</span></div>
+            <div class="stack-item"><span class="stack-label">Access</span><span>Conditional Access</span></div>
+            <div class="stack-item"><span class="stack-label">Scripting</span><span>PowerShell</span></div>
+            <div class="stack-item"><span class="stack-label">Apps</span><span>Win32 (.intunewin)</span></div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>By the Numbers</h3>
+          <div class="stat-row"><span class="stat-n">1,000+</span><span>Windows endpoints in scope</span></div>
+          <div class="stat-row"><span class="stat-n">2</span><span>identity models (hybrid + cloud)</span></div>
+          <div class="stat-row"><span class="stat-n">3</span><span>update rings per tenant</span></div>
+          <div class="stat-row"><span class="stat-n">6</span><span>baseline policies applied fleet-wide</span></div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Status</h3>
+          <div class="status-list">
+            <div class="status-item done">✓ Autopilot configured</div>
+            <div class="status-item done">✓ Auto-enrollment configured</div>
+            <div class="status-item done">✓ Baseline profiles active</div>
+            <div class="status-item done">✓ Update rings configured</div>
+            <div class="status-item done">✓ Compliance + Conditional Access</div>
+            <div class="status-item inprog">⟳ SharePoint sync — testing</div>
+            <div class="status-item inprog">⟳ LOB app packaging — in progress</div>
+            <div class="status-item inprog">⟳ Client tenant rollout — pending</div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Related</h3>
+          <a href="../index.html#projects" class="related-link">All Projects →</a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="mono c-muted">int0x8000 · Greater Atlanta, GA</span>
+      <span class="mono c-muted"><span class="c-green">●</span> 34 containers running</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Centralized Log Management — int0x8000</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/style.css" />
+  <link rel="stylesheet" href="project.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">← int0x8000<span class="blink">_</span></a>
+    <div class="nav-links">
+      <a href="../index.html#projects">projects</a>
+      <a href="../index.html#contact">contact</a>
+    </div>
+  </nav>
+
+  <div class="proj-hero">
+    <div class="container">
+      <div class="proj-meta">
+        <span class="proj-cat">SIEM / Log Management</span>
+        <span class="proj-status online">● ONLINE</span>
+      </div>
+      <h1 class="proj-title">Centralized Log Management</h1>
+      <p class="proj-subtitle">Fleet-wide syslog collection across 34 LXC containers deployed via Ansible, organized into security streams, with real-time dashboards in Graylog.</p>
+      <div class="tag-row">
+        <span class="tag">Graylog</span><span class="tag">Ansible</span>
+        <span class="tag">OpenSearch</span><span class="tag">rsyslog</span>
+        <span class="tag">MongoDB</span><span class="tag">Proxmox</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-body">
+    <div class="container proj-grid">
+
+      <!-- Main content -->
+      <div class="proj-main">
+
+        <section class="proj-section">
+          <h2>Overview</h2>
+          <p>Running 34 LXC containers across a self-hosted homelab generates a lot of log data — auth events, service starts and stops, kernel messages, application errors. Without centralized collection, investigating anything means SSH'ing into individual containers and grepping through logs manually. This project solves that by shipping every container's logs to a single Graylog instance, organized into streams, and searchable from one interface.</p>
+          <p>The architecture is deliberately simple: rsyslog (already installed by default on Debian/Ubuntu) forwards logs over UDP to Graylog. No agents to install, no complex pipelines. The deployment was automated via Ansible across all 34 hosts in a single playbook run.</p>
+        </section>
+
+        <section class="proj-section">
+          <h2>Architecture</h2>
+          <div class="arch-block">
+            <pre>34 LXC Containers (103–139)
+       │
+       │  rsyslog UDP forwarding
+       │  /etc/rsyslog.d/10-graylog.conf
+       │  *.* @192.168.x.x:1514
+       │
+       ▼
+  ┌─────────────────────────────────┐
+  │  Graylog (LXC 139)              │
+  │  192.168.x.x:9000               │
+  │                                 │
+  │  ┌─────────────────────────┐    │
+  │  │ Syslog UDP Input :1514  │    │
+  │  └────────────┬────────────┘    │
+  │               │                 │
+  │    ┌──────────┼──────────┐      │
+  │    ▼          ▼          ▼      │
+  │ Security   System    Application│
+  │ Events     Events    Logs       │
+  └─────────────────────────────────┘
+       │
+       ▼
+  OpenSearch (Data Node)
+  MongoDB (metadata)</pre>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Ansible Deployment</h2>
+          <p>Rather than configuring rsyslog manually on each container, the forwarding config was deployed fleet-wide in a single Ansible playbook run from a dedicated control node (LXC 140).</p>
+          <p>SSH keys were bootstrapped across all 34 hosts via Proxmox <code>pct exec</code> — which works regardless of whether SSH was pre-configured on each container, making it suitable for bootstrapping a mixed fleet from scratch.</p>
+          <div class="code-block">
+            <div class="code-label">playbooks/rsyslog-graylog.yml</div>
+            <pre>- name: Configure rsyslog forwarding to Graylog
+  hosts: lxc_containers
+  become: true
+  tasks:
+    - name: Ensure rsyslog is installed
+      apt:
+        name: rsyslog
+        state: present
+
+    - name: Deploy Graylog forwarding config
+      copy:
+        dest: /etc/rsyslog.d/10-graylog.conf
+        content: |
+          *.* @192.168.x.x:1514;RSYSLOG_SyslogProtocol23Format
+
+    - name: Restart rsyslog
+      service:
+        name: rsyslog
+        state: restarted</pre>
+          </div>
+          <div class="result-block">
+            <span class="result-label">First run result</span>
+            <pre>PLAY RECAP ─────────────────────────────────────────
+34 hosts  ok=4  changed=3  unreachable=0  failed=0</pre>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Log Streams</h2>
+          <p>Raw syslog from 34 containers would be one noisy feed. Graylog streams route messages into buckets based on field-matching rules, making it practical to search and alert on specific categories.</p>
+          <div class="stream-grid">
+            <div class="stream-card">
+              <div class="stream-head">
+                <span class="stream-name">Security Events</span>
+                <span class="proj-status online">● ACTIVE</span>
+              </div>
+              <div class="stream-rules">
+                <div class="rule">facility_num = 4 (auth)</div>
+                <div class="rule">facility_num = 10 (authpriv)</div>
+                <div class="rule">message contains "Failed password"</div>
+                <div class="rule">message contains "sudo"</div>
+                <div class="rule">message contains "authentication failure"</div>
+              </div>
+              <p class="stream-desc">Captures SSH activity, PAM auth events, sudo usage, and login failures across the entire fleet.</p>
+            </div>
+            <div class="stream-card">
+              <div class="stream-head">
+                <span class="stream-name">System Events</span>
+                <span class="proj-status online">● ACTIVE</span>
+              </div>
+              <div class="stream-rules">
+                <div class="rule">facility_num = 0 (kern)</div>
+                <div class="rule">message contains "Failed to start"</div>
+                <div class="rule">message contains "Out of memory"</div>
+                <div class="rule">message contains "Started" / "Stopped"</div>
+              </div>
+              <p class="stream-desc">Kernel messages, service lifecycle events, OOM kills, and systemd unit failures.</p>
+            </div>
+            <div class="stream-card">
+              <div class="stream-head">
+                <span class="stream-name">Application Logs</span>
+                <span class="proj-status online">● ACTIVE</span>
+              </div>
+              <div class="stream-rules">
+                <div class="rule">facility_num = 3 (daemon)</div>
+                <div class="rule">facility_num = 16–17 (local0/1)</div>
+              </div>
+              <p class="stream-desc">General daemon and application-level syslog output from all services.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <h2>Troubleshooting: MongoDB FTDC Segfault</h2>
+          <p>Graylog's MongoDB component crashed on startup with a SIGSEGV on every attempt, despite the host CPU (Xeon E5-2630 v3) correctly reporting AVX support. After ruling out OS mismatch, memory pressure, file ownership issues, and container privilege levels, the root cause was isolated via <code>strace</code> and a <code>timeout</code>-based test:</p>
+          <p>MongoDB 8.x's FTDC (Full Time Diagnostic Data Capture) thread uses TCMalloc's periodic CPU profiling sampler, which crashes on this specific Xeon microcode revision even though raw AVX execution works correctly. The crash happened consistently at ~30 seconds after startup — exactly when FTDC's first collection interval fires.</p>
+          <div class="code-block">
+            <div class="code-label">/etc/systemd/system/mongod.service.d/override.conf</div>
+            <pre>[Service]
+ExecStart=
+ExecStart=/usr/bin/mongod --config /etc/mongod.conf \
+  --setParameter diagnosticDataCollectionEnabled=false</pre>
+          </div>
+          <p>Disabling FTDC via systemd drop-in resolved the crash. MongoDB has been stable since.</p>
+        </section>
+
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="proj-sidebar">
+        <div class="sidebar-card">
+          <h3>Stack</h3>
+          <div class="stack-list">
+            <div class="stack-item"><span class="stack-label">Log Server</span><span>Graylog 6.x</span></div>
+            <div class="stack-item"><span class="stack-label">Search</span><span>OpenSearch (Data Node)</span></div>
+            <div class="stack-item"><span class="stack-label">Metadata</span><span>MongoDB 8.x</span></div>
+            <div class="stack-item"><span class="stack-label">Transport</span><span>rsyslog UDP/1514</span></div>
+            <div class="stack-item"><span class="stack-label">Automation</span><span>Ansible</span></div>
+            <div class="stack-item"><span class="stack-label">Hosts</span><span>Proxmox LXC (Debian 12)</span></div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>By the Numbers</h3>
+          <div class="stat-row"><span class="stat-n">34</span><span>LXC containers shipping logs</span></div>
+          <div class="stat-row"><span class="stat-n">3</span><span>log streams configured</span></div>
+          <div class="stat-row"><span class="stat-n">1</span><span>Ansible playbook run to deploy all</span></div>
+          <div class="stat-row"><span class="stat-n">0</span><span>failed hosts on first run</span></div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Related Projects</h3>
+          <a href="detection.html" class="related-link">Detection-as-Code Pipeline →</a>
+          <a href="../index.html#projects" class="related-link">All Projects →</a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="mono c-muted">int0x8000 · Greater Atlanta, GA</span>
+      <span class="mono c-muted"><span class="c-green">●</span> 34 containers running</span>
+    </div>
+  </footer>
+</body>
+</html>
