@@ -7,7 +7,7 @@ const DATA = {
     location: "Greater Atlanta, GA",
     email:    "matthew@ganifongs.com",
     github:   "github.com/int0x8000",
-    linkedin: "https://www.linkedin.com/in/matthew-nifong/",
+    linkedin: "www.linkedin.com/in/matthew-nifong",
     status:   "open to opportunities",
   },
 
@@ -20,7 +20,7 @@ const DATA = {
     since: new Date("2024-01-01T00:00:00"),
   },
 
-  about: `Matthew is a systems and security engineer with hands-on
+  about: `I'm a systems and security engineer with hands-on
 experience designing and deploying enterprise infrastructure
 across multi-tenant MSP environments.
 

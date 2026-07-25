@@ -169,14 +169,14 @@ class FileSystem {
   }
 
   cat(pathStr) {
-    const node = this.resolve(pathStr) || this.resolve([...this.cwd, pathStr].join("/"));
+    const node = this.resolve(pathStr);
     if (!node)               return { ok: false, err: `cat: ${pathStr}: No such file or directory` };
     if (node.type === "dir") return { ok: false, err: `cat: ${pathStr}: Is a directory` };
     return { ok: true, content: node.content };
   }
 
   exec(pathStr) {
-    const node = this.resolve(pathStr) || this.resolve([...this.cwd, pathStr].join("/"));
+    const node = this.resolve(pathStr);
     if (!node)       return { ok: false, err: `bash: ${pathStr}: No such file or directory` };
     if (!node.executable) return { ok: false, err: `bash: ${pathStr}: Permission denied` };
     return { ok: true, content: node.content };

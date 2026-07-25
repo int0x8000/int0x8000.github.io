@@ -57,11 +57,20 @@ class TopologyCanvas {
     this.frame   = 0;
     this.animId  = null;
 
+    this.reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     this._initNodes();
     this._resize();
-    window.addEventListener("resize", () => this._resize());
-    this._spawnPackets();
-    this._loop();
+    this._onResize = () => this._resize();
+    window.addEventListener("resize", this._onResize);
+
+    if (!this.reduceMotion) {
+      this._spawnPackets();
+      this._loop();
+    } else {
+      // Draw a single static frame instead of animating continuously.
+      this._draw();
+    }
   }
 
   _initNodes() {
@@ -88,7 +97,9 @@ class TopologyCanvas {
   }
 
   _spawnPackets() {
+    this._running = true;
     const spawn = () => {
+      if (!this._running) return;
       const edge = TOPOLOGY.edges[Math.floor(Math.random() * TOPOLOGY.edges.length)];
       const reverse = Math.random() > .5;
       this.packets.push({
@@ -98,7 +109,7 @@ class TopologyCanvas {
         speed: .004 + Math.random() * .004,
         color: TOPOLOGY.colors[this._nodeById(reverse ? edge[1] : edge[0])?.group] || "#FABD2F",
       });
-      setTimeout(spawn, 600 + Math.random() * 1400);
+      this._spawnTimeoutId = setTimeout(spawn, 600 + Math.random() * 1400);
     };
     spawn();
   }
@@ -107,6 +118,20 @@ class TopologyCanvas {
     this.animId = requestAnimationFrame(() => this._loop());
     this._draw();
     this.frame++;
+  }
+
+  /* Pause/resume so the hero canvas doesn't keep animating
+     (and burning CPU/battery) once it's scrolled off-screen. */
+  pause() {
+    this._running = false;
+    if (this.animId) { cancelAnimationFrame(this.animId); this.animId = null; }
+    if (this._spawnTimeoutId) { clearTimeout(this._spawnTimeoutId); this._spawnTimeoutId = null; }
+  }
+
+  resume() {
+    if (this.reduceMotion || this.animId) return;
+    this._spawnPackets();
+    this._loop();
   }
 
   _draw() {
@@ -176,8 +201,8 @@ class TopologyCanvas {
   }
 
   destroy() {
-    if (this.animId) cancelAnimationFrame(this.animId);
-    window.removeEventListener("resize", this._resize);
+    this.pause();
+    window.removeEventListener("resize", this._onResize);
   }
 }
 

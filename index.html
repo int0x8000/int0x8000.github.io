@@ -8,12 +8,31 @@
   <meta property="og:title" content="Matthew Nifong — Systems & Security Engineer" />
   <meta property="og:description" content="Systems and security engineer. Intune · Graylog · Detection-as-Code · Ansible · Proxmox. Greater Atlanta, GA." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://int0x8000.github.io/" />
+  <meta property="og:image" content="https://int0x8000.github.io/assets/preview.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://int0x8000.github.io/" />
   <meta name="theme-color" content="#282828" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Matthew Nifong",
+    "jobTitle": "Systems & Security Engineer",
+    "url": "https://int0x8000.github.io/",
+    "sameAs": [
+      "https://github.com/int0x8000",
+      "https://www.linkedin.com/in/matthew-nifong/"
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <script data-goatcounter="https://int0x8000.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
@@ -27,16 +46,18 @@
       <a href="#projects">projects</a>
       <a href="#contact">contact</a>
     </div>
-    <button class="nav-menu-btn" aria-label="menu">☰</button>
+    <button type="button" class="nav-menu-btn" aria-label="menu">☰</button>
   </nav>
 
   <section class="hero" id="hero">
     <canvas class="topology-canvas" id="topology-canvas"></canvas>
     <div class="hero-inner">
 
+      <h1 class="visually-hidden">Matthew Nifong — Systems &amp; Security Engineer, Greater Atlanta, GA</h1>
+
       
       <div class="term-chrome">
-        <div class="konsole-menubar">
+        <div class="konsole-menubar" aria-hidden="true">
           <span class="kmenu-item active">File</span>
           <span class="kmenu-item">Edit</span>
           <span class="kmenu-item">View</span>
@@ -49,7 +70,7 @@
             <span id="hero-uptime">--</span>
           </span>
         </div>
-        <div class="konsole-tabbar">
+        <div class="konsole-tabbar" aria-hidden="true">
           <div class="konsole-tab active">
             <span class="ktab-icon">⬡</span>
             <span class="ktab-title">visitor@int0x8000: ~</span>
@@ -59,8 +80,8 @@
         </div>
 
         
-        <div class="terminal-container" tabindex="0">
-          <div class="term-output"></div>
+        <div class="terminal-container" tabindex="0" role="group" aria-label="Interactive terminal — type help to see available commands">
+          <div class="term-output" aria-live="polite"></div>
           <div class="term-input-line" style="display:none;">
             <span class="term-prompt"></span>
             <span class="term-input-wrap">
@@ -73,13 +94,17 @@
 
       
       <div class="hero-cta">
-        <a href="assets/matthew-resume.pdf" class="btn-primary" target="_blank">↓ Resume</a>
-        <a href="https://github.com/int0x8000" class="btn-ghost" target="_blank">GitHub</a>
-        <a href="https://www.linkedin.com/in/matthew-nifong/" class="btn-ghost" target="_blank">LinkedIn</a>
+        <a href="assets/matthew-resume.pdf" class="btn-primary" target="_blank" rel="noopener noreferrer">↓ Resume</a>
+        <a href="https://github.com/int0x8000" class="btn-ghost" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/in/matthew-nifong/" class="btn-ghost" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </div>
 
     </div>
   </section>
+
+  <div class="logstream-strip" aria-hidden="true">
+    <div class="logstream-inner"></div>
+  </div>
 
   
   <section class="section" id="about">
@@ -94,7 +119,7 @@
         <span class="mn-val">// multi-tenant</span>
         <span class="mn-val">// hybrid + cloud</span>
       </div>
-      <h2 class="section-title reveal"><span class="hash">#</span> about</h2>
+      <h2 class="section-title reveal"><span class="hash" aria-hidden="true">#</span> about</h2>
       <div class="about-grid reveal">
         <div class="about-text">
           <p>By work I'm at an MSP leading a <strong>Microsoft Intune + Entra ID</strong> rollout across multiple client tenants — <strong>1,000+ Windows endpoints</strong>, hybrid Azure AD, Autopilot, Win32 app packaging, the works. It's the kind of project most people at my level don't get anywhere near, and I've learned more from the edge cases and gotchas than any cert course.</p>
@@ -169,7 +194,7 @@
         <span class="mn-val">// actively building</span>
         <span class="mn-val">// open to offers</span>
       </div>
-      <h2 class="section-title reveal"><span class="hash">#</span> timeline</h2>
+      <h2 class="section-title reveal"><span class="hash" aria-hidden="true">#</span> timeline</h2>
       <div class="timeline reveal">
 
         <div class="tl-item">
@@ -279,7 +304,7 @@
         <span class="mn-val">// vendor-neutral</span>
         <span class="mn-val">// homelab proven</span>
       </div>
-      <h2 class="section-title reveal"><span class="hash">#</span> skills</h2>
+      <h2 class="section-title reveal"><span class="hash" aria-hidden="true">#</span> skills</h2>
       <div class="skills-hint reveal"><span class="mono c-muted">$ cat skills.yaml</span></div>
       <div class="yaml-block reveal">
         <div class="yaml-line"><span class="y-comment"># technical skill areas</span></div>
@@ -357,7 +382,7 @@
         <span class="mn-val">// /int0x8000</span>
         <span class="mn-val">// versioned + documented</span>
       </div>
-      <h2 class="section-title reveal"><span class="hash">#</span> projects</h2>
+      <h2 class="section-title reveal"><span class="hash" aria-hidden="true">#</span> projects</h2>
       <p class="section-sub reveal">Selected projects — production-grade, documented, and version-controlled.<br><span class="mono c-muted">$ ls projects/</span></p>
 
       
@@ -484,21 +509,21 @@
   
   <section class="section section-alt" id="contact">
     <div class="container">
-      <h2 class="section-title reveal"><span class="hash">#</span> contact</h2>
+      <h2 class="section-title reveal"><span class="hash" aria-hidden="true">#</span> contact</h2>
       <div class="contact-grid reveal">
         <div class="contact-left">
           <p class="contact-intro">Open to roles in Systems Engineering, IAM Engineering, and Security Operations in the Greater Atlanta area.</p>
           <div class="contact-links">
             <a href="mailto:matthew@ganifongs.com" class="contact-item">
-              <span class="ci-icon">✉</span>
+              <span class="ci-icon" aria-hidden="true">✉</span>
               <span>matthew@ganifongs.com</span>
             </a>
-            <a href="https://www.linkedin.com/in/matthew-nifong/" class="contact-item" target="_blank">
-              <span class="ci-icon mono">in</span>
+            <a href="https://www.linkedin.com/in/matthew-nifong/" class="contact-item" target="_blank" rel="noopener noreferrer">
+              <span class="ci-icon mono" aria-hidden="true">in</span>
               <span>https://www.linkedin.com/in/matthew-nifong/</span>
             </a>
-            <a href="https://github.com/int0x8000" class="contact-item" target="_blank">
-              <span class="ci-icon mono">gh</span>
+            <a href="https://github.com/int0x8000" class="contact-item" target="_blank" rel="noopener noreferrer">
+              <span class="ci-icon mono" aria-hidden="true">gh</span>
               <span>github.com/int0x8000</span>
             </a>
           </div>
@@ -507,9 +532,9 @@
           <div class="status-terminal">
             <div class="st-bar">
               <div class="term-dots">
-                <span class="tdot red"></span>
-                <span class="tdot yellow"></span>
-                <span class="tdot green"></span>
+                <span class="tdot red" aria-hidden="true"></span>
+                <span class="tdot yellow" aria-hidden="true"></span>
+                <span class="tdot green" aria-hidden="true"></span>
               </div>
               <span class="st-title">status.sh</span>
             </div>
@@ -530,16 +555,18 @@
     <div class="container footer-inner">
       <span class="mono c-muted">int0x8000 · Greater Atlanta, GA</span>
       <span class="mono c-muted"><span class="c-green">●</span> 34 containers running</span>
+      <span class="mono c-subtle footer-privacy-note">Privacy-friendly analytics via GoatCounter — no cookies, no tracking</span>
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
-  <script src="js/topology.js"></script>
-  <script src="js/filesystem.js"></script>
-  <script src="js/commands.js"></script>
-  <script src="js/network.js"></script>
-  <script src="js/terminal.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/data.js" defer></script>
+  <script src="js/topology.js" defer></script>
+  <script src="js/logstream.js" defer></script>
+  <script src="js/filesystem.js" defer></script>
+  <script src="js/commands.js" defer></script>
+  <script src="js/network.js" defer></script>
+  <script src="js/terminal.js" defer></script>
+  <script src="js/main.js" defer></script>
 
 </body>
 </html>

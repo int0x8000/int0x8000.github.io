@@ -50,6 +50,24 @@ a{color:inherit;text-decoration:none}
 strong{color:var(--text);font-weight:600}
 .mono{font-family:var(--mono)}
 
+/* ── ACCESSIBILITY UTILITIES ─────────────────────────────────── */
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Visible keyboard-focus ring. Nothing in this stylesheet defined
+   one before — Tab-only users had no way to see where focus was. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+.feat-card:focus-visible,
+.terminal-container:focus-visible{
+  outline:2px solid var(--yellow);
+  outline-offset:2px;
+  border-radius:var(--r);
+}
+/* Terminal input has its own caret for feedback; keep the ring subtle
+   on the outer scroll container rather than boxing every keystroke. */
+.term-input:focus-visible{outline:none}
+
 /* ── ANIMATIONS ──────────────────────────────────────────────── */
 @keyframes blink {0%,100%{opacity:1}50%{opacity:0}}
 @keyframes pulse {0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
@@ -120,7 +138,8 @@ strong{color:var(--text);font-weight:600}
 .btn-ghost:hover{border-color:var(--yellow);color:var(--yellow);transform:translateY(-1px)}
 
 /* ── SECTIONS ────────────────────────────────────────────────── */
-.section{padding:80px 2rem}
+.section{padding:80px 2rem;scroll-margin-top:52px}
+#hero{scroll-margin-top:0}
 .section-alt{background:var(--surf)}
 .container{max-width:1020px;margin:0 auto}
 .section-title{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--text);margin-bottom:2.5rem;display:flex;align-items:center;gap:8px}
@@ -138,7 +157,12 @@ strong{color:var(--text);font-weight:600}
 .cert-badge.active{background:rgba(184,187,38,.1);color:var(--green);border:1px solid rgba(184,187,38,.3)}
 .cert-badge.progress{background:rgba(131,165,152,.1);color:var(--blue);border:1px solid rgba(131,165,152,.3)}
 .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.stat-card{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r-lg);padding:1.25rem;display:flex;flex-direction:column;gap:6px}
+.stat-card{background:var(--bg);border:1px solid var(--border2);border-left:2px solid var(--border2);border-radius:var(--r-lg);padding:1.25rem;display:flex;flex-direction:column;gap:6px;transition:border-left-color .2s}
+/* Echoes the topology canvas's category colors for a bit of visual cohesion */
+.stat-card:nth-child(1){border-left-color:var(--blue)}   /* IAM/endpoints */
+.stat-card:nth-child(2){border-left-color:var(--orange)} /* infra/LXC */
+.stat-card:nth-child(3){border-left-color:var(--red)}    /* security/detection */
+.stat-card:nth-child(4){border-left-color:var(--blue)}   /* IAM/cert */
 .stat-num{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--yellow);line-height:1}
 .stat-plus{font-size:18px}
 .stat-label{font-size:12px;color:var(--muted);line-height:1.4}
@@ -153,6 +177,7 @@ strong{color:var(--text);font-weight:600}
 .featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2.5rem}
 .feat-card{display:flex;flex-direction:column;background:var(--surf);border:1px solid var(--border2);border-radius:var(--r-lg);padding:1.5rem;transition:border-color .15s,transform .15s,box-shadow .15s;cursor:pointer}
 .feat-card:hover{border-color:var(--yellow);transform:translateY(-2px);box-shadow:0 8px 24px rgba(250,189,47,.08)}
+.feat-card:active,.btn-primary:active,.btn-ghost:active{transform:translateY(0) scale(.98)}
 .feat-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
 .proj-cat{font-family:var(--mono);font-size:10px;color:var(--subtle);text-transform:uppercase;letter-spacing:.08em}
 .proj-status{font-family:var(--mono);font-size:11px;font-weight:600}
@@ -166,8 +191,8 @@ strong{color:var(--text);font-weight:600}
 .tag{font-family:var(--mono);font-size:11px;padding:2px 8px;background:rgba(131,165,152,.08);color:var(--blue);border-radius:var(--r);border:1px solid rgba(131,165,152,.2)}
 .more-title{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:1.25rem;text-transform:uppercase;letter-spacing:.06em}
 .more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-.more-card{background:var(--surf);border:1px solid var(--border2);border-radius:var(--r-lg);padding:1.25rem;transition:border-color .15s}
-.more-card:hover{border-color:var(--border)}
+.more-card{background:var(--surf);border:1px solid var(--border2);border-radius:var(--r-lg);padding:1.25rem;transition:border-color .15s,transform .15s}
+.more-card:hover{border-color:var(--border);transform:translateY(-2px)}
 .more-title-card{font-size:14px;font-weight:600;color:var(--text);margin-bottom:.5rem}
 .more-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:.75rem}
 
@@ -186,8 +211,9 @@ strong{color:var(--text);font-weight:600}
 
 /* ── FOOTER ──────────────────────────────────────────────────── */
 .footer{padding:1.5rem 2rem;border-top:1px solid var(--border2)}
-.footer-inner{display:flex;justify-content:space-between;align-items:center}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem 1.5rem}
 .footer-inner span{font-size:12px;font-family:var(--mono);color:var(--subtle)}
+.footer-privacy-note{font-size:11px;opacity:.75}
 
 /* ── RESPONSIVE ──────────────────────────────────────────────── */
 @media(max-width:900px){
@@ -208,6 +234,7 @@ strong{color:var(--text);font-weight:600}
 @media(prefers-reduced-motion:reduce){
   .blink,.pulse-dot{animation:none;opacity:1}
   .reveal{opacity:1;transform:none;transition:none}
+  .logstream-inner{animation:none!important;transform:none!important}
   *{transition:none!important}
 }
 

@@ -2,8 +2,21 @@ let term;
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   const topoCanvas = document.getElementById("topology-canvas");
-  if (topoCanvas) new TopologyCanvas(topoCanvas);
+  if (topoCanvas) {
+    const topo = new TopologyCanvas(topoCanvas);
+    // Stop animating once the hero is scrolled out of view — no point
+    // burning CPU/battery on a canvas nobody can see.
+    const heroObs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) topo.resume(); else topo.pause();
+    }, { threshold: 0 });
+    heroObs.observe(topoCanvas);
+  }
+
+  const logstreamEl = document.querySelector(".logstream-strip");
+  if (logstreamEl && !reduceMotion) new LogStream(logstreamEl);
 
   const container = document.querySelector(".terminal-container");
   term = new Terminal(container);

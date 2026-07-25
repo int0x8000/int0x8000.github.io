@@ -67,17 +67,19 @@ const COMMANDS = {
   cd(args, fs) {
     const path   = args[0] || "~";
     const result = fs.cd(path);
-    return result.ok ? { output: "" } : { output: result.err };
+    return result.ok ? { output: "", ok: true } : { output: result.err, ok: false };
   },
 
   cat(args, fs) {
-    if (!args.length) return { output: "cat: missing operand" };
+    if (!args.length) return { output: "cat: missing operand", ok: false };
     const results = [];
+    let ok = true;
     for (const arg of args) {
       const r = fs.cat(arg);
       results.push(r.ok ? r.content : r.err);
+      if (!r.ok) ok = false;
     }
-    return { output: results.join("\n\n") };
+    return { output: results.join("\n\n"), ok };
   },
 
   pwd(args, fs) {
@@ -277,14 +279,14 @@ const COMMANDS = {
   _exec(scriptName, fs) {
     const name = scriptName.replace("./", "");
     const result = fs.exec(name);
-    if (!result.ok) return { output: result.err };
+    if (!result.ok) return { output: result.err, ok: false };
 
     const lines = result.content.split("\n")
       .filter(l => l.trim().startsWith("echo"))
       .map(l => l.replace(/^.*?echo\s+"?(.*?)"?\s*$/, "$1")
                   .replace(/\\n/g, "\n")
                   .replace(/\$\(calculate_uptime\)/, getUptime()));
-    return { output: lines.join("\n") };
+    return { output: lines.join("\n"), ok: true };
   },
 
 };

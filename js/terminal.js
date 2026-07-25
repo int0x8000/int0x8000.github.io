@@ -114,19 +114,14 @@ class Terminal {
     if (cmd.startsWith("./")) {
       const result = COMMANDS._exec(cmd, this.fs);
       if (result.output) this._appendOutput(result.output, result.html);
-      return false;
+      return result.ok === false;
     }
 
     if (cmd === "cd") {
       const result = COMMANDS.cd(args, this.fs);
       if (result.output) this._appendOutput(result.output, result.html);
       this._updatePrompt();
-      return false;
-    }
-
-    if (cmd === "clear") {
-      this.output.innerHTML = "";
-      return false;
+      return result.ok === false;
     }
 
     if (COMMANDS[cmd]) {
@@ -134,11 +129,11 @@ class Terminal {
       if (result.clear) { this.output.innerHTML = ""; return false; }
       if (result.output) this._appendOutput(result.output, result.html);
       this._updatePrompt();
-      return false;
+      return result.ok === false;
     }
 
     this._appendOutput(`bash: ${cmd}: command not found\nType 'help' for available commands.`);
-    return false;
+    return true;
   }
 
   _tokenize(str) {
@@ -172,11 +167,6 @@ class Terminal {
       const filePart  = partial.includes("/") ? partial.split("/").pop() : partial;
       const lsResult  = this.fs.ls(dirPart || ".");
       if (!lsResult.ok) return;
-      const matches   = Object.keys(lsResult.entries)
-        .filter(n => n.startsWith(filePart))
-        .map(n => (dirPart ? dirPart + "/" : "") + n +
-             (lsResult.entries[n.replace(dirPart ? dirPart + "/" : "", "")] ||
-              lsResult.entries[n] && lsResult.entries[n].type === "dir" ? "/" : ""));
       const entryMatches = Object.entries(lsResult.entries)
         .filter(([n]) => n.startsWith(filePart))
         .map(([n, node]) => (dirPart ? dirPart + "/" : "") + n + (node.type === "dir" ? "/" : ""));
